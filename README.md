@@ -9,7 +9,8 @@
 - ✅ 自定义提示词
 - ✅ 自动重试机制
 - ✅ 详细的处理日志
-- ✅ JSON 和 TXT 双格式输出
+- ✅ **图片输出**: 自动保存增强后的图片到 `output/` 目录
+- ✅ JSON 和 TXT 双格式结果记录
 - ✅ 速率限制保护
 - ✅ 支持自定义 API 端点
 
@@ -104,9 +105,15 @@ visible floor reflections, and a sense of spatial depth.
 
 ## 输出结果
 
-脚本会生成两个文件：
+脚本会生成以下输出：
 
-### 1. JSON 格式 (`results.json`)
+### 1. 增强后的图片文件 (`output/` 目录)
+- 处理后的图片保存在 `output/` 目录下
+- 文件命名格式：`原文件名_enhanced.png`
+- 例如：`images/photo1.jpg` → `output/photo1_enhanced.png`
+
+### 2. JSON 格式结果 (`results.json`)
+包含处理统计信息和每张图片的详细信息：
 ```json
 {
   "summary": {
@@ -121,17 +128,18 @@ visible floor reflections, and a sense of spatial depth.
     {
       "index": 1,
       "filename": "photo1.jpg",
-      "filepath": "D:/images/photo1.jpg",
+      "filepath": "images/photo1.jpg",
+      "output_image": "output/photo1_enhanced.png",
       "status": "success",
-      "response": "这张图片...",
+      "response": "...",
       "timestamp": "2025-10-24T10:30:01"
     }
   ]
 }
 ```
 
-### 2. 文本格式 (`results.txt`)
-易读的文本格式，包含每张图片的处理结果。
+### 3. 文本格式结果 (`results.txt`)
+易读的文本格式，包含每张图片的处理结果和处理统计。
 
 ## 注意事项
 
@@ -162,13 +170,19 @@ Gemini/
 ├── config.example.json        # 配置文件模板
 ├── config.json               # 你的配置文件（不要提交到 git）
 ├── README.md                 # 说明文档
-├── images/                   # 图片目录
+├── images/                   # 输入图片目录
 │   ├── photo1.jpg
 │   ├── photo2.png
+│   └── ...
+├── output/                   # 输出图片目录（处理后图片）
+│   ├── photo1_enhanced.png
+│   ├── photo2_enhanced.png
 │   └── ...
 ├── results.json              # 输出结果（JSON）
 └── results.txt               # 输出结果（文本）
 ```
+
+**注意**: `output/`、`results.json` 和 `results.txt` 在 `.gitignore` 中被忽略，不会提交到 Git 仓库。
 
 ## 故障排除
 
