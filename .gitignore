@@ -1,48 +1,33 @@
-# API Keys and sensitive data
-config.json
+# Python 虚拟环境
+.venv/
+venv/
+env/
+ENV/
 
-# Python
+# Python 编译文件
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-env/
-venv/
-ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Output files
+# 配置文件（可能包含 API 密钥）
+config.json
+
+# 输入/输出文件
+images/
+output/
 results.json
 results.txt
-output/
 
-# Test images
-images/
-test_images/
+# Jupyter Notebook 临时文件
+.ipynb_checkpoints/
 
-# IDE
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# IDE 配置
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
