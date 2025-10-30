@@ -27,7 +27,7 @@ results.txt
 Thumbs.db
 
 # IDE 配置
-.vscode/
 .idea/
+.vscode/
 *.swp
 *.swo

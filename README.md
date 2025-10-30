@@ -14,7 +14,22 @@
 - ✅ 速率限制保护
 - ✅ 支持自定义 API 端点
 
-## 安装依赖
+## 环境准备
+
+### 1. 创建虚拟环境（推荐）
+
+```bash
+# 创建虚拟环境
+python3 -m venv venv
+
+# 激活虚拟环境
+# macOS/Linux:
+source venv/bin/activate
+# Windows:
+# venv\Scripts\activate
+```
+
+### 2. 安装依赖
 
 ```bash
 pip install -r requirements.txt
