@@ -12,8 +12,8 @@ import time
 import base64
 from pathlib import Path
 from typing import List, Optional
-from openai import OpenAI
-from PIL import Image
+from openai import OpenAI  # type: ignore
+from PIL import Image  # type: ignore
 import argparse
 from datetime import datetime
 import io

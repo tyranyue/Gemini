@@ -1,6 +1,6 @@
 # OpenAI 批量图片美化脚本
 
-使用 OpenAI API (GPT-4 Vision) 批量处理和美化图片的 Python 脚本。
+使用 OpenAI API 批量处理和美化图片的 Python 脚本。支持通过 OpenAI 兼容端点调用 Gemini 2.5 Flash 图像预览模型。
 
 ## 功能特点
 
@@ -22,13 +22,28 @@ pip install -r requirements.txt
 
 ## 配置说明
 
-### 当前配置
+### 使用配置文件（推荐）
 
-配置文件 `config.json` 已经包含：
-- ✅ API Key: 已设置
-- ✅ 图片目录: `./images`
-- ✅ 提示词: 博物馆展览风格美化
-- ✅ 模型: `gpt-4o`
+1. 复制 `config.example.json` 为 `config.json`
+2. 编辑 `config.json` 填入你的 API 密钥
+
+配置文件示例 (`config.example.json`):
+```json
+{
+  "api_key": "YOUR_API_KEY_HERE",
+  "base_url": "https://ggdl.haohaozhongzhuan.com/v1",
+  "input_dir": "./images",
+  "prompt": "你的提示词",
+  "model": "gemini-2.5-flash-image-preview",
+  "output_file": "results.json",
+  "output_dir": "output",
+  "delay": 2.0,
+  "temperature": 0.0,
+  "max_tokens": 2048
+}
+```
+
+**注意**: `config.json` 文件已在 `.gitignore` 中，不会被提交到 Git 仓库。
 
 ## 使用方法
 
@@ -50,8 +65,12 @@ python batch_image_enhancer.py \
   --input "./images" \
   --prompt "你的提示词" \
   --output "results.json" \
-  --model "gpt-4o" \
-  --delay 1.0
+  --output-dir "output" \
+  --model "gemini-2.5-flash-image-preview" \
+  --base-url "https://your-api-endpoint.com/v1" \
+  --delay 1.0 \
+  --temperature 0.0 \
+  --max-tokens 2048
 ```
 
 ## 命令行参数说明
@@ -62,16 +81,18 @@ python batch_image_enhancer.py \
 | `--input` | `-i` | 输入图片目录 | 必需 |
 | `--prompt` | `-p` | 通用提示词 | 必需 |
 | `--output` | `-o` | 输出结果文件 | results.json |
-| `--model` | `-m` | 模型名称 | gpt-4o |
-| `--base-url` | - | 自定义 API 端点 | - |
-| `--delay` | `-d` | 请求延迟（秒） | 1.0 |
+| `--output-dir` | - | 输出图片保存目录 | output |
+| `--model` | `-m` | 模型名称 | gemini-2.5-flash-image-preview |
+| `--base-url` | - | 自定义 API 端点 URL | - |
+| `--delay` | `-d` | 请求延迟秒数 | 1.0 |
+| `--temperature` | - | 温度参数 | 0.0 |
+| `--max-tokens` | - | 最大 token 数 | 2048 |
 | `--config` | `-c` | 配置文件路径 | - |
 
 ## 支持的模型
 
-- `gpt-4o` (推荐，最新多模态模型)
-- `gpt-4-turbo`
-- `gpt-4-vision-preview`
+- `gemini-2.5-flash-image-preview` (默认，Gemini 2.5 Flash 图像预览模型)
+- 其他 OpenAI 兼容 API 支持的模型
 
 ## 当前提示词
 
@@ -120,7 +141,7 @@ visible floor reflections, and a sense of spatial depth.
     "total": 10,
     "success": 9,
     "failed": 1,
-    "model": "gpt-4o",
+    "model": "gemini-2.5-flash-image-preview",
     "prompt": "...",
     "timestamp": "2025-10-24T10:30:00"
   },
@@ -145,7 +166,7 @@ visible floor reflections, and a sense of spatial depth.
 
 1. **API 配额**: OpenAI API 按使用量计费，请注意费用
 2. **速率限制**: 脚本默认在每次请求间延迟 1 秒，可通过 `--delay` 调整
-3. **图片大小**: GPT-4 Vision 支持的图片大小有限制（建议 < 20MB）
+3. **图片大小**: 建议图片大小 < 20MB
 4. **网络连接**: 需要稳定的网络连接
 5. **API 密钥安全**: 不要将包含 API 密钥的 `config.json` 提交到版本控制系统
 
@@ -215,7 +236,8 @@ python batch_image_enhancer.py \
   --api-key "sk-xxx" \
   --input "./images" \
   --prompt "Enhance this image with museum exhibition style" \
-  --model "gpt-4o"
+  --model "gemini-2.5-flash-image-preview" \
+  --base-url "https://ggdl.haohaozhongzhuan.com/v1"
 ```
 
 ## 许可证
@@ -225,9 +247,9 @@ MIT License
 ## 更新日志
 
 ### v2.0.0 (2025-10-24)
-- 切换到 OpenAI API
-- 支持 GPT-4 Vision 模型
+- 使用 Gemini 2.5 Flash 图像预览模型
 - 支持自定义 API 端点
+- 自动保存增强后的图片到 output 目录
 - 改进错误处理
 
 ### v1.0.0 (2025-10-24)
