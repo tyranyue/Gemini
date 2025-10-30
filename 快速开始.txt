@@ -1,0 +1,106 @@
+======================================
+Gemini 批量图片美化脚本 - 快速开始指南
+======================================
+
+✅ 配置已完成！现在可以直接使用。
+
+📋 使用步骤
+-----------
+
+1. 将要处理的图片放入 images 文件夹
+   - 支持格式: JPG, PNG, GIF, WEBP, BMP
+   - 可以放任意数量的图片
+
+2. （强烈推荐）先测试单张图片
+   python test_single_image.py
+   
+   这会测试你的配置是否正确，并显示单张图片的处理效果
+
+3. 批量处理
+   打开命令行，进入项目目录，执行：
+   
+   python batch_image_enhancer.py --config config.json
+
+4. 查看结果
+   - output/ - 生成的图片（文件名_enhanced.png）
+   - results.json - JSON 格式的详细结果
+   - results.txt  - 易读的文本格式结果
+
+📝 当前配置
+-----------
+✅ API Key: 已设置
+✅ API 端点: https://ggdl.haohaozhongzhuan.com/v1
+✅ 模型: gemini-2.5-flash-image-preview (Gemini 图像预览模型)
+✅ 图片目录: ./images
+✅ 提示词: 博物馆展览风格美化
+✅ Temperature: 0.0 (确定性输出)
+✅ Max Tokens: 2048
+
+🎨 提示词内容
+-----------
+"Please enhance this image with the following style: 
+Wooden pedestal under a single, soft spotlight. 
+Background: deep charcoal-gray museum wall with subtle gradients and depth of field.
+A soft halo of warm light gently illuminates the artifact, enhancing its natural textures 
+and true colors without overexposure.
+The scene evokes a luxury museum exhibition environment — calm, elegant, and refined.
+Ultra-realistic ceramic or stone texture, professional product-photography lighting, 
+visible floor reflections, and a sense of spatial depth."
+
+⚙️ 修改配置
+-----------
+如果需要修改提示词或其他设置，编辑 config.json 文件：
+
+{
+  "api_key": "你的密钥",
+  "base_url": "https://ggdl.haohaozhongzhuan.com/v1",  <- API 端点
+  "input_dir": "./images",          <- 图片所在文件夹
+  "prompt": "你的提示词",            <- 自定义提示词
+  "model": "gemini-2.5-flash-image-preview",  <- 模型名称
+  "output_file": "results.json",    <- 输出日志文件名
+  "output_dir": "output",           <- 生成图片保存目录
+  "delay": 1.0,                     <- 请求间隔（秒）
+  "temperature": 0.0,               <- 温度参数（0-2）
+  "max_tokens": 2048                <- 最大响应长度
+}
+
+💡 提示
+-------
+- 第一次运行前确保已安装依赖: pip install -r requirements.txt
+- 处理大量图片时建议增加 delay 值避免速率限制
+- temperature 越低输出越确定，越高越有创造性
+- 查看 README.md 了解更多详细信息
+
+🔧 常用命令
+-----------
+# 使用配置文件运行（推荐）
+python batch_image_enhancer.py --config config.json
+
+# 只处理特定文件夹
+python batch_image_enhancer.py --config config.json --input "D:\my_photos"
+
+# 使用不同的提示词
+python batch_image_enhancer.py --config config.json --prompt "你的新提示词"
+
+# 增加请求延迟到 2 秒
+python batch_image_enhancer.py --config config.json --delay 2.0
+
+# 调整温度参数（增加创造性）
+python batch_image_enhancer.py --config config.json --temperature 0.7
+
+📞 获取帮助
+-----------
+查看所有可用参数:
+python batch_image_enhancer.py --help
+
+🎯 关键特点
+-----------
+✅ 使用 Gemini 2.5 Flash 图像预览模型（通过兼容的 OpenAI API）
+✅ 支持自定义 API 端点
+✅ 参考你的 Jupyter Notebook 调用方式
+✅ 图片放在前面，提示词在后（符合最佳实践）
+✅ 支持温度和最大 token 控制
+
+======================================
+祝使用愉快！
+======================================
