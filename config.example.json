@@ -1,6 +1,6 @@
 {
   "api_key": "YOUR_API_KEY_HERE",
-  "base_url": "https://ggdl.haohaozhongzhuan.com/v1",
+  "base_url": "https://api.go-model.com/v1",
   "input_dir": "./images",
   "prompt": "Please enhance this image with the following style: Wooden pedestal under a single, soft spotlight. Background: deep charcoal-gray museum wall with subtle gradients and depth of field. A soft halo of warm light gently illuminates the artifact, enhancing its natural textures and true colors without overexposure. The scene evokes a luxury museum exhibition environment — calm, elegant, and refined. Ultra-realistic ceramic or stone texture, professional product-photography lighting, visible floor reflections, and a sense of spatial depth.",
   "model": "gemini-2.5-flash-image-preview",
@@ -10,4 +10,3 @@
   "temperature": 0.0,
   "max_tokens": 2048
 }
-
