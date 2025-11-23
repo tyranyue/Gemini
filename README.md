@@ -6,13 +6,13 @@
 
 - ✅ 批量处理多张图片
 - ✅ 支持多种图片格式（JPG, PNG, GIF, WEBP, BMP）
-- ✅ 自定义提示词
-- ✅ 自动重试机制
-- ✅ 详细的处理日志
-- ✅ **图片输出**: 自动保存增强后的图片到 `output/` 目录
-- ✅ JSON 和 TXT 双格式结果记录
-- ✅ 速率限制保护
-- ✅ 支持自定义 API 端点
+- ✅ 自定义提示词（支持文件读取 + 高清附加提示）
+- ✅ 自动重试机制（指数退避），可选串行/并发
+- ✅ 运行批次目录：`output/run-YYYYMMDD-HHMMSS/`
+- ✅ **图片输出**: 自动保存增强后的图片到批次目录，只保存图片（无大段文本）
+- ✅ 结果摘要 JSON/TXT（不含 base64），可选调试文本保存
+- ✅ 上传前尺寸自适应 + 本地放大（默认 1.5x，LANCZOS）
+- ✅ 支持自定义 API 端点，支持流式/非流式响应
 
 ## 环境准备
 
@@ -85,7 +85,14 @@ python batch_image_enhancer.py \
   --base-url "https://your-api-endpoint.com/v1" \
   --delay 1.0 \
   --temperature 0.0 \
-  --max-tokens 2048
+  --max-tokens 2048 \
+  --prompt-file prompt.txt \
+  --quality-hint "请返回高分辨率 PNG 的 base64，至少 2048px 宽。" \
+  --upscale 1.5 \
+  --max-side 2048 \
+  --concurrency 1 \
+  --resume \
+  --debug-save
 ```
 
 ## 命令行参数说明
@@ -103,6 +110,15 @@ python batch_image_enhancer.py \
 | `--temperature` | - | 温度参数 | 0.0 |
 | `--max-tokens` | - | 最大 token 数 | 2048 |
 | `--config` | `-c` | 配置文件路径 | - |
+| `--prompt-file` | - | 从文件读取提示词（优先于 --prompt） | - |
+| `--quality-hint` | - | 附加高清提示 | 请返回一张高分辨率 PNG 的 base64，至少 2048px 宽。 |
+| `--upscale` | - | 本地放大倍数 (1.0/1.5/2.0) | 1.5 |
+| `--max-side` | - | 上传前最长边限制 | 2048 |
+| `--concurrency` | - | 并发数（1 最稳） | 1 |
+| `--resume` | - | 跳过已存在输出 | false |
+| `--retry` | - | 重试次数 | 3 |
+| `--debug-save` | - | 保存无图响应文本用于排查 | false |
+| `--no-stream` | - | 禁用流式（默认流式开启） | - |
 
 ## 支持的模型
 
@@ -144,9 +160,9 @@ visible floor reflections, and a sense of spatial depth.
 脚本会生成以下输出：
 
 ### 1. 增强后的图片文件 (`output/` 目录)
-- 处理后的图片保存在 `output/` 目录下
-- 文件命名格式：`原文件名_enhanced.png`
-- 例如：`images/photo1.jpg` → `output/photo1_enhanced.png`
+- 每次运行都会在 `output/run-YYYYMMDD-HHMMSS/` 生成一个批次目录
+- 图片命名格式：`原文件名_enhanced.png`
+- 例如：`images/photo1.jpg` → `output/run-20251124-120000/photo1_enhanced.png`
 
 ### 2. JSON 格式结果 (`results.json`)
 包含处理统计信息和每张图片的详细信息：
@@ -165,9 +181,9 @@ visible floor reflections, and a sense of spatial depth.
       "index": 1,
       "filename": "photo1.jpg",
       "filepath": "images/photo1.jpg",
-      "output_image": "output/photo1_enhanced.png",
+      "output_image": "output/run-20251124-120000/photo1_enhanced.png",
       "status": "success",
-      "response": "...",
+      "error": null,
       "timestamp": "2025-10-24T10:30:01"
     }
   ]
@@ -239,6 +255,8 @@ Gemini/
 - 检查图片文件是否损坏
 - 确认图片大小在限制范围内
 - 查看错误日志了解具体原因
+- 若接口只在流式返回图片，保持默认（流式开启）；若出现异常，可以尝试 `--no-stream` 切换为非流式。
+- 若仍无图片，可加 `--debug-save`，在批次目录生成 `.response.txt` 以排查返回内容。
 
 ## 示例运行
 
